@@ -102,7 +102,11 @@ async function parseSocketConfig (fileContent) {
   }
 
   if (!validate(parsedContent)) {
-    throw new SocketValidationError('Invalid config definition', validate.errors || [])
+    throw new SocketValidationError(
+      'Invalid config definition',
+      validate.errors || [],
+      parsedContent
+    )
   }
 
   return parsedContent
@@ -126,9 +130,16 @@ class SocketValidationError extends Error {
   /**
    * @param {string} message
    * @param {import('ajv').ErrorObject[]} validationErrors
+   * @param {unknown} parsedContent
    */
-  constructor (message, validationErrors) {
+  constructor (message, validationErrors, parsedContent) {
     super(message)
+
+    /** @type {unknown} */
+    this.data = parsedContent
+
+    /** @type {import('ajv').JSONSchemaType<SocketYml>} */
+    this.schema = socketYmlSchema
 
     /** @type {import('ajv').ErrorObject[]} */
     this.validationErrors = validationErrors

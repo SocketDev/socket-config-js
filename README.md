@@ -43,9 +43,13 @@ A JSON Schema object typed with [`JSONSchemaType<SocketYml>`](https://ajv.js.org
 
 ### `SocketValidationError`
 
-Error thrown when the parsed data doesn't conform to the JSON Schema definition (see `socketYmlSchema`).
+Error thrown when the parsed data doesn't conform to the JSON Schema definition.
 
-Exposes an array of [Ajv's `ErrorObject`](https://ajv.js.org/api.html#error-objects) at `.validationErrors`, allowing a consumer to present a user friendly error.
+Extends `Error` and adds these additional properties:
+
+* `data` – the data that's found to be invalid
+* `schema` – the schema used to validate the content
+* `validationErrors` – an array of [Ajv's `ErrorObject`](https://ajv.js.org/api.html#error-objects)
 
 ## Type exports
 
