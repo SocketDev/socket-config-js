@@ -189,9 +189,27 @@ async function parseV1SocketConfig (parsedV1Content) {
   return v2
 }
 
+/**
+ *
+ * @returns {SocketYml}
+ */
+function getDefaultConfig () {
+  const config = { version: 2 }
+  if (!validate(config)) {
+    throw new SocketValidationError(
+      'Invalid config definition',
+      validate.errors || [],
+      config
+    )
+  }
+
+  return config
+}
+
 module.exports = {
   parseSocketConfig,
   readSocketConfig,
   SocketValidationError,
   socketYmlSchema,
+  getDefaultConfig
 }
