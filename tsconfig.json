@@ -1,0 +1,29 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "files": [
+    "index.js"
+  ],
+  "include": [
+    "test/**/*",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "module": "es2022",
+    "moduleResolution": "node",
+
+    /* New checks being tried out */
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+
+    /* Additional checks */
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  }
+}

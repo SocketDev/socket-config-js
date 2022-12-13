@@ -1,0 +1,21 @@
+version: 2
+
+projectIgnorePaths:
+  - workspaces/test*
+  - '!workspaces/test-framework'
+
+issueRules:
+  unresolvedRequire: false
+
+githubApp:
+  # beta opt in field
+  beta: false
+
+  # enable/disable the Socket.dev GitHub app entirely
+  enabled: true
+
+  # enable/disable GitHub app pull request alert checks
+  pullRequestAlertsEnabled: true
+
+  # enable/disable Github app project report checks
+  projectReportsEnabled: true
