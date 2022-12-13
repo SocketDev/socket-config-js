@@ -10,17 +10,17 @@ const { socketYmlSchemaV1 } = require('./lib/v1')
 
 /**
  * @typedef SocketYmlGitHub
- * @property {boolean} [enabled] enable/disable the Socket.dev GitHub app entirely
- * @property {boolean} [projectReportsEnabled] enable/disable Github app project report checks
- * @property {boolean} [pullRequestAlertsEnabled] enable/disable GitHub app pull request alert checks
+ * @property {boolean} enabled enable/disable the Socket.dev GitHub app entirely
+ * @property {boolean} projectReportsEnabled enable/disable Github app project report checks
+ * @property {boolean} pullRequestAlertsEnabled enable/disable GitHub app pull request alert checks
  */
 
 /**
  * @typedef SocketYml
  * @property {2} version
- * @property {string[]} [projectIgnorePaths]
- * @property {{ [issueName: string]: boolean }} [issueRules]
- * @property {SocketYmlGitHub} [githubApp]
+ * @property {string[]} projectIgnorePaths
+ * @property {{ [issueName: string]: boolean }} issueRules
+ * @property {SocketYmlGitHub} githubApp
  */
 
 /** @type {import('ajv').JSONSchemaType<SocketYml>} */
@@ -32,24 +32,24 @@ const socketYmlSchema = {
     projectIgnorePaths: {
       type: 'array',
       items: { type: 'string' },
-      nullable: true
+      default: []
     },
     issueRules: {
       type: 'object',
-      nullable: true,
       required: [],
-      additionalProperties: { type: 'boolean' }
+      additionalProperties: { type: 'boolean' },
+      default: {}
     },
     githubApp: {
       type: 'object',
-      nullable: true,
       properties: {
-        enabled: { type: 'boolean', nullable: true, default: true },
-        projectReportsEnabled: { type: 'boolean', nullable: true, default: true },
-        pullRequestAlertsEnabled: { type: 'boolean', nullable: true, default: true },
+        enabled: { type: 'boolean', default: true },
+        projectReportsEnabled: { type: 'boolean', default: true },
+        pullRequestAlertsEnabled: { type: 'boolean', default: true },
       },
       required: [],
       additionalProperties: false,
+      default: { enabled: true, projectReportsEnabled: true, pullRequestAlertsEnabled: true }
     },
   },
   required: ['version'],
@@ -180,9 +180,9 @@ async function parseV1SocketConfig (parsedV1Content) {
     projectIgnorePaths: parsedV1Content?.ignore ?? [],
     issueRules: parsedV1Content?.issues ?? {},
     githubApp: {
-      enabled: parsedV1Content?.enabled,
-      pullRequestAlertsEnabled: parsedV1Content?.pullRequestAlertsEnabled,
-      projectReportsEnabled: parsedV1Content?.projectReportsEnabled
+      enabled: Boolean(parsedV1Content?.enabled),
+      pullRequestAlertsEnabled: Boolean(parsedV1Content?.pullRequestAlertsEnabled),
+      projectReportsEnabled: Boolean(parsedV1Content?.projectReportsEnabled)
     }
   }
   return v2
