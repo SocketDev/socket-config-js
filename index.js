@@ -62,12 +62,14 @@ const ajvOptions = /** @type {const} */ ({
   logger: false,
   useDefaults: true
 })
+
 const ajv = new Ajv({
   ...ajvOptions,
   removeAdditional: 'failing',
 })
 
 const validate = ajv.compile(socketYmlSchema)
+
 // We want to be strict and fail rather than removeAdditional when we parse a possible v1 config – only fallback to it when it actually matches well
 const ajvV1 = new Ajv({
   ...ajvOptions
