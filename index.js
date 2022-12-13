@@ -6,7 +6,7 @@ const { default: Ajv } = require('ajv')
 const { ErrorWithCause } = require('pony-cause')
 const { parse: yamlParse } = require('yaml')
 
-const { socketTmlSchemaV1 } = require('./lib/v1')
+const { socketYmlSchemaV1 } = require('./lib/v1')
 
 /**
  * @typedef SocketYmlGitHub
@@ -75,7 +75,7 @@ const ajvV1 = new Ajv({
   ...ajvOptions
 })
 
-const validateV1 = ajvV1.compile(socketTmlSchemaV1)
+const validateV1 = ajvV1.compile(socketYmlSchemaV1)
 
 /**
  * @param {string} filePath
