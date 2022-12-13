@@ -14,6 +14,16 @@ const {
 chai.use(chaiAsPromised)
 chai.should()
 
+const defaults = {
+  'githubApp': {
+    'enabled': true,
+    'projectReportsEnabled': true,
+    'pullRequestAlertsEnabled': true,
+  },
+  'issueRules': {},
+  'projectIgnorePaths': [],
+}
+
 describe('parseSocketConfig()', () => {
   it('should read and parse socket.yml', async () => {
     const fileContent = await readFile(path.resolve(__dirname, 'sample.yml'), 'utf8')
@@ -72,7 +82,7 @@ bar: {{ def }} {{ efg }}
 version: 2
 foo: true
 `)
-      .should.eventually.become({ version: 2 })
+      .should.eventually.become({ version: 2, ...defaults })
   })
 
   it('should coerce types', async () => {
@@ -82,6 +92,7 @@ projectIgnorePaths: foobar
 `)
       .should.eventually.become({
         version: 2,
+        ...defaults,
         projectIgnorePaths: ['foobar'],
       })
   })

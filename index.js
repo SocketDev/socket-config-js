@@ -32,13 +32,15 @@ const socketYmlSchema = {
     projectIgnorePaths: {
       type: 'array',
       items: { type: 'string' },
-      nullable: true
+      nullable: true,
+      default: []
     },
     issueRules: {
       type: 'object',
       nullable: true,
       required: [],
-      additionalProperties: { type: 'boolean' }
+      additionalProperties: { type: 'boolean' },
+      default: {}
     },
     githubApp: {
       type: 'object',
@@ -50,6 +52,7 @@ const socketYmlSchema = {
       },
       required: [],
       additionalProperties: false,
+      default: {}
     },
   },
   required: ['version'],
