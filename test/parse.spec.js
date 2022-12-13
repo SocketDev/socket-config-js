@@ -14,13 +14,12 @@ const {
 chai.use(chaiAsPromised)
 chai.should()
 
-describe('readSocketConfig()', () => {
+describe('parseSocketConfig()', () => {
   it('should read and parse socket.yml', async () => {
     const fileContent = await readFile(path.resolve(__dirname, 'sample.yml'), 'utf8')
 
     await parseSocketConfig(fileContent).should.eventually.become({
       'githubApp': {
-        'beta': false,
         'enabled': true,
         'projectReportsEnabled': true,
         'pullRequestAlertsEnabled': true,
@@ -31,6 +30,24 @@ describe('readSocketConfig()', () => {
       'projectIgnorePaths': [
         'workspaces/test*',
         '!workspaces/test-framework',
+      ],
+      'version': 2,
+    })
+  })
+
+  it('should read and parse socket.yml v1', async () => {
+    const fileContent = await readFile(path.resolve(__dirname, 'sample-v1.yml'), 'utf8')
+
+    await parseSocketConfig(fileContent).should.eventually.become({
+      'githubApp': {
+        'enabled': true,
+        'projectReportsEnabled': false,
+        'pullRequestAlertsEnabled': true,
+      },
+      'issueRules': {},
+      'projectIgnorePaths': [
+        'foo',
+        'bar',
       ],
       'version': 2,
     })

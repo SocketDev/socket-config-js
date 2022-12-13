@@ -21,7 +21,8 @@
     "index.js",
     "index.d.ts",
     "index.d.ts.map",
-    "schema.json"
+    "schema.json",
+    "lib/*"
   ],
   "scripts": {
     "build:0": "run-s clean",

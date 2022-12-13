@@ -2,7 +2,7 @@ version: 2
 
 projectIgnorePaths:
   - workspaces/test*
-  - '!workspaces/test-framework'
+  - "!workspaces/test-framework"
 
 issueRules:
   unresolvedRequire: false
