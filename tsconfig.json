@@ -4,6 +4,7 @@
     "index.js"
   ],
   "include": [
+    "lib/**/*",
     "test/**/*",
   ],
   "compilerOptions": {
