@@ -20,11 +20,13 @@
   "files": [
     "index.js",
     "index.d.ts",
-    "index.d.ts.map"
+    "index.d.ts.map",
+    "schema.json"
   ],
   "scripts": {
     "build:0": "run-s clean",
     "build:1-declaration": "tsc -p declaration.tsconfig.json",
+    "build:2-schema-file": "echo \"console.log(JSON.stringify(require('.').socketYmlSchema, undefined, 2))\" | node > schema.json",
     "build": "run-s build:*",
     "check:dependency-check": "dependency-check '*.js' 'test/**/*.js' --no-dev",
     "check:installed-check": "installed-check -i eslint-plugin-jsdoc",
