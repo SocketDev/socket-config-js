@@ -6,9 +6,10 @@ const { default: Ajv } = require('ajv')
 const { ErrorWithCause } = require('pony-cause')
 const { parse: yamlParse } = require('yaml')
 
+const { socketYmlSchemaV1 } = require('./lib/v1')
+
 /**
  * @typedef SocketYmlGitHub
- * @property {boolean} [beta] beta opt in field
  * @property {boolean} [enabled] enable/disable the Socket.dev GitHub app entirely
  * @property {boolean} [projectReportsEnabled] enable/disable Github app project report checks
  * @property {boolean} [pullRequestAlertsEnabled] enable/disable GitHub app pull request alert checks
@@ -31,22 +32,21 @@ const socketYmlSchema = {
     projectIgnorePaths: {
       type: 'array',
       items: { type: 'string' },
-      nullable: true,
+      nullable: true
     },
     issueRules: {
       type: 'object',
       nullable: true,
       required: [],
-      additionalProperties: { type: 'boolean' },
+      additionalProperties: { type: 'boolean' }
     },
     githubApp: {
       type: 'object',
       nullable: true,
       properties: {
-        beta: { type: 'boolean', nullable: true },
-        enabled: { type: 'boolean', nullable: true },
-        projectReportsEnabled: { type: 'boolean', nullable: true },
-        pullRequestAlertsEnabled: { type: 'boolean', nullable: true },
+        enabled: { type: 'boolean', nullable: true, default: true },
+        projectReportsEnabled: { type: 'boolean', nullable: true, default: true },
+        pullRequestAlertsEnabled: { type: 'boolean', nullable: true, default: true },
       },
       required: [],
       additionalProperties: false,
@@ -56,14 +56,26 @@ const socketYmlSchema = {
   additionalProperties: false,
 }
 
-const ajv = new Ajv({
+const ajvOptions = /** @type {const} */ ({
   allErrors: true,
   coerceTypes: 'array',
   logger: false,
+  useDefaults: true
+})
+
+const ajv = new Ajv({
+  ...ajvOptions,
   removeAdditional: 'failing',
 })
 
 const validate = ajv.compile(socketYmlSchema)
+
+// We want to be strict and fail rather than removeAdditional when we parse a possible v1 config – only fallback to it when it actually matches well
+const ajvV1 = new Ajv({
+  ...ajvOptions
+})
+
+const validateV1 = ajvV1.compile(socketYmlSchemaV1)
 
 /**
  * @param {string} filePath
@@ -99,6 +111,13 @@ async function parseSocketConfig (fileContent) {
     parsedContent = yamlParse(fileContent)
   } catch (err) {
     throw new ErrorWithCause('Error when parsing socket.yml config', { cause: err })
+  }
+
+  if (parsedContent && typeof parsedContent === 'object' && !('version' in parsedContent)) {
+    const parsedV1 = await parseV1SocketConfig(parsedContent)
+    if (parsedV1) {
+      return parsedV1
+    }
   }
 
   if (!validate(parsedContent)) {
@@ -144,6 +163,29 @@ class SocketValidationError extends Error {
     /** @type {import('ajv').ErrorObject[]} */
     this.validationErrors = validationErrors
   }
+}
+
+/**
+ * @param {object} parsedV1Content
+ * @returns {Promise<SocketYml | undefined>}
+ */
+async function parseV1SocketConfig (parsedV1Content) {
+  if (!validateV1(parsedV1Content)) {
+    return
+  }
+
+  /** @type {SocketYml} */
+  const v2 = {
+    version: 2,
+    projectIgnorePaths: parsedV1Content?.ignore ?? [],
+    issueRules: parsedV1Content?.issues ?? {},
+    githubApp: {
+      enabled: parsedV1Content?.enabled,
+      pullRequestAlertsEnabled: parsedV1Content?.pullRequestAlertsEnabled,
+      projectReportsEnabled: parsedV1Content?.projectReportsEnabled
+    }
+  }
+  return v2
 }
 
 module.exports = {

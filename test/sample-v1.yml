@@ -1,0 +1,5 @@
+ignore:
+  - foo
+  - bar
+projectReportsEnabled: false
+beta: true

@@ -16,7 +16,6 @@ describe('readSocketConfig()', () => {
   it('should read and parse socket.yml', async () => {
     await readSocketConfig(path.resolve(__dirname, 'sample.yml')).should.eventually.become({
       'githubApp': {
-        'beta': false,
         'enabled': true,
         'projectReportsEnabled': true,
         'pullRequestAlertsEnabled': true,
