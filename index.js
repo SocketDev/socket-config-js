@@ -20,7 +20,7 @@ const { socketYmlSchemaV1 } = require('./lib/v1')
  * @property {2} version
  * @property {string[]} projectIgnorePaths
  * @property {{ [issueName: string]: boolean }} issueRules
- * @property {SocketYmlGitHub | {}} githubApp
+ * @property {SocketYmlGitHub} githubApp
  */
 
 /** @type {import('ajv').JSONSchemaType<SocketYml>} */
@@ -49,7 +49,7 @@ const socketYmlSchema = {
       },
       required: [],
       additionalProperties: false,
-      default: {}
+      default: { enabled: true, projectReportsEnabled: true, pullRequestAlertsEnabled: true }
     },
   },
   required: ['version'],
