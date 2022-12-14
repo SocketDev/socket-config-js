@@ -100,10 +100,10 @@ async function readSocketConfig (filePath) {
 
 /**
  * @param {string} fileContent
- * @returns {Promise<SocketYml>}
+ * @returns {SocketYml}
  * @throws {SocketValidationError}
  */
-async function parseSocketConfig (fileContent) {
+function parseSocketConfig (fileContent) {
   /** @type {unknown} */
   let parsedContent
 
@@ -114,7 +114,7 @@ async function parseSocketConfig (fileContent) {
   }
 
   if (parsedContent && typeof parsedContent === 'object' && !('version' in parsedContent)) {
-    const parsedV1 = await parseV1SocketConfig(parsedContent)
+    const parsedV1 = parseV1SocketConfig(parsedContent)
     if (parsedV1) {
       return parsedV1
     }
@@ -167,9 +167,9 @@ class SocketValidationError extends Error {
 
 /**
  * @param {object} parsedV1Content
- * @returns {Promise<SocketYml | undefined>}
+ * @returns {SocketYml | undefined}
  */
-async function parseV1SocketConfig (parsedV1Content) {
+function parseV1SocketConfig (parsedV1Content) {
   if (!validateV1(parsedV1Content)) {
     return
   }

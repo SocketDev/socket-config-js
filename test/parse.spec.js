@@ -13,7 +13,7 @@ const {
 } = require('../index.js')
 
 chai.use(chaiAsPromised)
-chai.should()
+const should = chai.should()
 
 /** @type {import('../index.js').SocketYml} */
 const defaults = {
@@ -27,7 +27,7 @@ describe('parseSocketConfig()', () => {
   it('should read and parse socket.yml', async () => {
     const fileContent = await readFile(path.resolve(__dirname, 'sample.yml'), 'utf8')
 
-    await parseSocketConfig(fileContent).should.eventually.become({
+    parseSocketConfig(fileContent).should.deep.equal({
       'githubApp': {
         'enabled': true,
         'projectReportsEnabled': true,
@@ -47,7 +47,7 @@ describe('parseSocketConfig()', () => {
   it('should read and parse socket.yml v1', async () => {
     const fileContent = await readFile(path.resolve(__dirname, 'sample-v1.yml'), 'utf8')
 
-    await parseSocketConfig(fileContent).should.eventually.become({
+    parseSocketConfig(fileContent).should.deep.equal({
       'githubApp': {
         'enabled': true,
         'projectReportsEnabled': false,
@@ -62,34 +62,37 @@ describe('parseSocketConfig()', () => {
     })
   })
 
-  it('should throw on invalid document structure', async () => {
-    await parseSocketConfig(`
+  it('should throw on invalid document structure', () => {
+    should.Throw(() => {
+      parseSocketConfig(`
 projectIgnorePaths: true
 `)
-      .should.be.rejectedWith(SocketValidationError, /Invalid config definition/)
+    }, SocketValidationError, /Invalid config definition/)
   })
 
-  it('should throw error when not parseable', async () => {
-    await parseSocketConfig(`
+  it('should throw error when not parseable', () => {
+    should.Throw(() => {
+      parseSocketConfig(`
 foo: abc, {{ bcd }} {{ cde }}
 bar: {{ def }} {{ efg }}
-`).should.be.rejectedWith(/Error when parsing socket\.yml config/)
+`)
+    }, /Error when parsing socket\.yml config/)
   })
 
-  it('should not return unknown properties', async () => {
-    await parseSocketConfig(`
+  it('should not return unknown properties', () => {
+    parseSocketConfig(`
 version: 2
 foo: true
 `)
-      .should.eventually.become(defaults)
+      .should.deep.equal(defaults)
   })
 
-  it('should coerce types', async () => {
-    await parseSocketConfig(`
+  it('should coerce types', () => {
+    parseSocketConfig(`
 version: 2
 projectIgnorePaths: foobar
 `)
-      .should.eventually.become({
+      .should.deep.equal({
         ...defaults,
         projectIgnorePaths: ['foobar'],
       })
