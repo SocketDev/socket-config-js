@@ -179,12 +179,12 @@ async function parseV1SocketConfig (parsedV1Content) {
     version: 2,
     projectIgnorePaths: parsedV1Content?.ignore ?? [],
     issueRules: parsedV1Content?.issues ?? {},
-    githubApp: {}
+    githubApp: {
+      ...('enabled' in parsedV1Content ? { enabled: parsedV1Content.enabled } : {}),
+      ...('pullRequestAlertsEnabled' in parsedV1Content ? { pullRequestAlertsEnabled: parsedV1Content.pullRequestAlertsEnabled } : {}),
+      ...('projectReportsEnabled' in parsedV1Content ? { projectReportsEnabled: parsedV1Content.projectReportsEnabled } : {}),
+    }
   }
-
-  if ('enabled' in parsedV1Content) v2.githubApp.enabled = parsedV1Content.enabled
-  if ('pullRequestAlertsEnabled' in parsedV1Content) v2.githubApp.pullRequestAlertsEnabled = parsedV1Content.pullRequestAlertsEnabled
-  if ('projectReportsEnabled' in parsedV1Content) v2.githubApp.projectReportsEnabled = parsedV1Content.projectReportsEnabled
 
   return v2
 }
