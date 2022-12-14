@@ -10,9 +10,9 @@ const { socketYmlSchemaV1 } = require('./lib/v1')
 
 /**
  * @typedef SocketYmlGitHub
- * @property {boolean} enabled enable/disable the Socket.dev GitHub app entirely
- * @property {boolean} projectReportsEnabled enable/disable Github app project report checks
- * @property {boolean} pullRequestAlertsEnabled enable/disable GitHub app pull request alert checks
+ * @property {boolean} [enabled] enable/disable the Socket.dev GitHub app entirely
+ * @property {boolean} [projectReportsEnabled] enable/disable Github app project report checks
+ * @property {boolean} [pullRequestAlertsEnabled] enable/disable GitHub app pull request alert checks
  */
 
 /**
@@ -43,13 +43,13 @@ const socketYmlSchema = {
     githubApp: {
       type: 'object',
       properties: {
-        enabled: { type: 'boolean', default: true },
-        projectReportsEnabled: { type: 'boolean', default: true },
-        pullRequestAlertsEnabled: { type: 'boolean', default: true },
+        enabled: { type: 'boolean', nullable: true },
+        projectReportsEnabled: { type: 'boolean', nullable: true },
+        pullRequestAlertsEnabled: { type: 'boolean', nullable: true },
       },
       required: [],
       additionalProperties: false,
-      default: { enabled: true, projectReportsEnabled: true, pullRequestAlertsEnabled: true }
+      default: {}
     },
   },
   required: ['version'],
@@ -180,11 +180,12 @@ async function parseV1SocketConfig (parsedV1Content) {
     projectIgnorePaths: parsedV1Content?.ignore ?? [],
     issueRules: parsedV1Content?.issues ?? {},
     githubApp: {
-      enabled: Boolean(parsedV1Content?.enabled),
-      pullRequestAlertsEnabled: Boolean(parsedV1Content?.pullRequestAlertsEnabled),
-      projectReportsEnabled: Boolean(parsedV1Content?.projectReportsEnabled)
+      ...('enabled' in parsedV1Content ? { enabled: parsedV1Content.enabled } : {}),
+      ...('pullRequestAlertsEnabled' in parsedV1Content ? { pullRequestAlertsEnabled: parsedV1Content.pullRequestAlertsEnabled } : {}),
+      ...('projectReportsEnabled' in parsedV1Content ? { projectReportsEnabled: parsedV1Content.projectReportsEnabled } : {}),
     }
   }
+
   return v2
 }
 

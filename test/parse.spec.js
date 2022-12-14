@@ -15,11 +15,7 @@ chai.use(chaiAsPromised)
 chai.should()
 
 const defaults = {
-  'githubApp': {
-    'enabled': true,
-    'projectReportsEnabled': true,
-    'pullRequestAlertsEnabled': true,
-  },
+  'githubApp': {},
   'issueRules': {},
   'projectIgnorePaths': [],
 }
