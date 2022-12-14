@@ -7,6 +7,7 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 
 const {
+  getDefaultConfig,
   parseSocketConfig,
   SocketValidationError,
 } = require('../index.js')
@@ -14,7 +15,9 @@ const {
 chai.use(chaiAsPromised)
 chai.should()
 
+/** @type {import('../index.js').SocketYml} */
 const defaults = {
+  'version': 2,
   'githubApp': {},
   'issueRules': {},
   'projectIgnorePaths': [],
@@ -78,7 +81,7 @@ bar: {{ def }} {{ efg }}
 version: 2
 foo: true
 `)
-      .should.eventually.become({ version: 2, ...defaults })
+      .should.eventually.become(defaults)
   })
 
   it('should coerce types', async () => {
@@ -87,9 +90,14 @@ version: 2
 projectIgnorePaths: foobar
 `)
       .should.eventually.become({
-        version: 2,
         ...defaults,
         projectIgnorePaths: ['foobar'],
       })
+  })
+})
+
+describe('getDefaultConfig()', () => {
+  it('should return a default config', () => {
+    getDefaultConfig().should.deep.equal(defaults)
   })
 })
