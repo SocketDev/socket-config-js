@@ -1,5 +1,6 @@
 # Socket Config
 
+[![Socket Badge](https://socket.dev/api/badge/npm/pkg/@socketsecurity/config)](https://socket.dev/npm/package/@socketsecurity/config)
 [![npm version](https://img.shields.io/npm/v/@socketsecurity/config.svg?style=flat)](https://www.npmjs.com/package/@socketsecurity/config)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/SocketDev/eslint-config)
 [![Types in JS](https://img.shields.io/badge/types_in_js-yes-brightgreen)](https://github.com/voxpelli/types-in-js)
