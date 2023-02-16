@@ -11,6 +11,7 @@ const { socketYmlSchemaV1 } = require('./lib/v1')
 /**
  * @typedef SocketYmlGitHub
  * @property {boolean} [enabled] enable/disable the Socket.dev GitHub app entirely
+ * @property {string[]} [ignoreUsers] list of GitHub usernames to ignore when creating reports
  * @property {boolean} [projectReportsEnabled] enable/disable Github app project report checks
  * @property {boolean} [pullRequestAlertsEnabled] enable/disable GitHub app pull request alert checks
  */
@@ -44,6 +45,11 @@ const socketYmlSchema = {
       type: 'object',
       properties: {
         enabled: { type: 'boolean', nullable: true },
+        ignoreUsers: {
+          type: 'array',
+          items: { type: 'string' },
+          nullable: true
+        },
         projectReportsEnabled: { type: 'boolean', nullable: true },
         pullRequestAlertsEnabled: { type: 'boolean', nullable: true },
       },
