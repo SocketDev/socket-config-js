@@ -14,6 +14,7 @@ const { socketYmlSchemaV1 } = require('./lib/v1')
  * @property {string[]} [ignoreUsers] list of GitHub usernames to ignore when creating reports
  * @property {boolean} [projectReportsEnabled] enable/disable Github app project report checks
  * @property {boolean} [pullRequestAlertsEnabled] enable/disable GitHub app pull request alert checks
+ * @property {boolean} [dependencyOverviewEnabled] enable/disable Pull request comments with details about changed dependencies
  */
 
 /**
@@ -52,6 +53,7 @@ const socketYmlSchema = {
         },
         projectReportsEnabled: { type: 'boolean', nullable: true },
         pullRequestAlertsEnabled: { type: 'boolean', nullable: true },
+        dependencyOverviewEnabled: { type: 'boolean', nullable: true }
       },
       required: [],
       additionalProperties: false,
