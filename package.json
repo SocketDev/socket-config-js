@@ -38,10 +38,13 @@
     "clean:declarations": "rm -rf $(find . -maxdepth 2 -type f -name '*.d.ts*')",
     "clean": "run-p clean:*",
     "prepare": "husky install",
-    "prepublishOnly": "run-s build",
+    "prepublishOnly": "git push --follow-tags && gh-release -y && run-s build",
     "test:mocha": "c8 --reporter=lcov --reporter text mocha 'test/**/*.spec.js'",
     "test-ci": "run-s test:*",
-    "test": "run-s check test:*"
+    "test": "run-s check test:*",
+    "version": "run-s prepare version:*",
+    "version:changelog": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:'",
+    "version:git": "git add CHANGELOG.md"
   },
   "devDependencies": {
     "@socketsecurity/eslint-config": "^2.0.0",
@@ -72,7 +75,9 @@
     "mocha": "^10.0.0",
     "npm-run-all2": "^6.0.2",
     "type-coverage": "^2.24.1",
-    "typescript": "~4.9.5"
+    "typescript": "~4.9.5",
+    "auto-changelog": "^2.4.0",
+    "gh-release": "^7.0.2"
   },
   "dependencies": {
     "ajv": "^8.12.0",
