@@ -19,12 +19,52 @@ const { socketYmlSchemaV1 } = require('./lib/v1')
  */
 
 /**
+ * Configures how an issue should be handled by a given layer of configuration.
+ * - "defer" will cause the issue to bubble up to a higher layer. E.G. socket.yml may defer to organization settings. This acts as if the value is unset.
+ * - "error" will cause an alert to be shown and require some kind of interaction/setting and will block usage if it is encountered. The interaction may be a prompt, a PR comment, etc.
+ * - "warn" will cause an alert to be shown but will not require any interaction/setting and will not block usage if it is encountered.
+ * - "ignore" will cause an issue to not be shown and not require any interaction/setting and will not block usage if it is encountered.
+ *
+ * @typedef {'defer' | 'error' | 'warn' | 'ignore'} SocketIssueRuleAction
+ */
+
+/**
+ * @typedef SocketIssueRuleObject
+ * @property {SocketIssueRuleAction} [action]
+ */
+
+/**
+ * @typedef {boolean | SocketIssueRuleObject} SocketIssueRuleValue
+ */
+
+/**
  * @typedef SocketYml
  * @property {2} version
  * @property {string[]} projectIgnorePaths
- * @property {{ [issueName: string]: boolean }} issueRules
+ * @property {{ [issueName: string]: SocketIssueRuleValue }} issueRules
  * @property {SocketYmlGitHub} githubApp
  */
+
+/** @type {import('ajv').JSONSchemaType<SocketIssueRuleValue>} */
+const socketYmlIssueRule = {
+  anyOf: [
+    {
+      type: 'boolean',
+      default: false
+    },
+    {
+      type: 'object',
+      properties: {
+        action: {
+          type: 'string',
+          enum: ['defer', 'error', 'warn', 'ignore'],
+          // note: ajv does not allow this enum to be `null`, this is due to anyOf
+          nullable: true
+        }
+      }
+    }
+  ]
+}
 
 /** @type {import('ajv').JSONSchemaType<SocketYml>} */
 const socketYmlSchema = {
@@ -40,7 +80,7 @@ const socketYmlSchema = {
     issueRules: {
       type: 'object',
       required: [],
-      additionalProperties: { type: 'boolean' },
+      additionalProperties: socketYmlIssueRule,
       default: {}
     },
     githubApp: {
