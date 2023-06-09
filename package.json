@@ -30,7 +30,7 @@
     "build:2-schema-file": "echo \"console.log(JSON.stringify(require('.').socketYmlSchema, undefined, 2))\" | node > schema.json",
     "build": "run-s build:*",
     "check:dependency-check": "dependency-check '*.js' 'test/**/*.js' --no-dev",
-    "check:installed-check": "installed-check -i eslint-plugin-jsdoc",
+    "//check:installed-check": "installed-check -i eslint-plugin-jsdoc",
     "check:lint": "eslint --report-unused-disable-directives .",
     "check:tsc": "tsc",
     "check:type-coverage": "type-coverage --detail --strict --at-least 95 --ignore-files 'test/*'",

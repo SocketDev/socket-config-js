@@ -8,6 +8,8 @@
     "test/**/*",
   ],
   "compilerOptions": {
+    "composite": true,
+
     "allowJs": true,
     "checkJs": true,
     "noEmit": true,
@@ -15,9 +17,11 @@
     "module": "es2022",
     "moduleResolution": "node",
 
-    /* New checks being tried out */
+    "strictNullChecks": true,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
