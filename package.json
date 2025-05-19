@@ -1,6 +1,6 @@
 {
   "name": "@socketsecurity/config",
-  "version": "2.1.3",
+  "version": "3.0.0",
   "description": "Config parser for Socket.dev",
   "homepage": "http://github.com/SocketDev/socket-config-js",
   "type": "commonjs",
