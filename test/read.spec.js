@@ -15,19 +15,19 @@ chai.should()
 describe('readSocketConfig()', () => {
   it('should read and parse socket.yml', async () => {
     await readSocketConfig(path.resolve(__dirname, 'sample.yml')).should.eventually.become({
-      'githubApp': {
-        'enabled': true,
-        'projectReportsEnabled': true,
-        'pullRequestAlertsEnabled': true,
+      githubApp: {
+        enabled: true,
+        projectReportsEnabled: true,
+        pullRequestAlertsEnabled: true,
       },
-      'issueRules': {
-        'unresolvedRequire': false,
+      issueRules: {
+        unresolvedRequire: false,
       },
-      'projectIgnorePaths': [
+      projectIgnorePaths: [
         'workspaces/test*',
         '!workspaces/test-framework',
       ],
-      'version': 2,
+      version: 2,
     })
   })
 
