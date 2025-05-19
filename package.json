@@ -40,7 +40,7 @@
     "test:mocha": "c8 --reporter=lcov --reporter text mocha 'test/**/*.spec.js'",
     "test-ci": "run-s test:*",
     "test": "run-s check test:*",
-    "version": "run-s prepare version:*",
+    "version": "run-s version:*",
     "version:changelog": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:'",
     "version:git": "git add CHANGELOG.md"
   },
