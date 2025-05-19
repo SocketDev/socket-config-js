@@ -17,10 +17,10 @@ const should = chai.should()
 
 /** @type {import('../index.js').SocketYml} */
 const defaults = {
-  'version': 2,
-  'githubApp': {},
-  'issueRules': {},
-  'projectIgnorePaths': [],
+  version: 2,
+  githubApp: {},
+  issueRules: {},
+  projectIgnorePaths: [],
 }
 
 describe('parseSocketConfig()', () => {
@@ -28,19 +28,19 @@ describe('parseSocketConfig()', () => {
     const fileContent = await readFile(path.resolve(__dirname, 'sample.yml'), 'utf8')
 
     parseSocketConfig(fileContent).should.deep.equal({
-      'githubApp': {
-        'enabled': true,
-        'projectReportsEnabled': true,
-        'pullRequestAlertsEnabled': true,
+      githubApp: {
+        enabled: true,
+        projectReportsEnabled: true,
+        pullRequestAlertsEnabled: true,
       },
-      'issueRules': {
-        'unresolvedRequire': false,
+      issueRules: {
+        unresolvedRequire: false,
       },
-      'projectIgnorePaths': [
+      projectIgnorePaths: [
         'workspaces/test*',
         '!workspaces/test-framework',
       ],
-      'version': 2,
+      version: 2,
     })
   })
 
@@ -48,17 +48,17 @@ describe('parseSocketConfig()', () => {
     const fileContent = await readFile(path.resolve(__dirname, 'sample-v1.yml'), 'utf8')
 
     parseSocketConfig(fileContent).should.deep.equal({
-      'githubApp': {
-        'enabled': true,
-        'projectReportsEnabled': false,
-        'pullRequestAlertsEnabled': true,
+      githubApp: {
+        enabled: true,
+        projectReportsEnabled: false,
+        pullRequestAlertsEnabled: true,
       },
-      'issueRules': {},
-      'projectIgnorePaths': [
+      issueRules: {},
+      projectIgnorePaths: [
         'foo',
         'bar',
       ],
-      'version': 2,
+      version: 2,
     })
   })
 

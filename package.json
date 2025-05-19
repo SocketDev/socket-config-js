@@ -15,7 +15,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=16.0.0"
+    "node": "18.20.7 || ^20.18.3 || >=22.14.0"
   },
   "files": [
     "index.js",
@@ -47,32 +47,19 @@
     "version:git": "git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@socketsecurity/eslint-config": "^3.0.1",
     "@tsconfig/node14": "^1.0.3",
     "@types/chai": "^4.3.3",
     "@types/chai-as-promised": "^7.1.5",
     "@types/mocha": "^10.0.0",
     "@types/node": "^14.18.36",
-    "@typescript-eslint/eslint-plugin": "^5.53.0",
-    "@typescript-eslint/parser": "^5.53.0",
     "c8": "^7.13.0",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
     "dependency-check": "^5.0.0-7",
-    "eslint": "^8.34.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-config-standard-jsx": "^11.0.0",
-    "eslint-import-resolver-typescript": "^3.5.3",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jsdoc": "^40.0.0",
-    "eslint-plugin-n": "^15.6.1",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-unicorn": "^45.0.2",
     "husky": "^8.0.3",
     "installed-check": "^7.0.0",
     "mocha": "^10.0.0",
+    "neostandard": "^0.12.0",
     "npm-run-all2": "^6.0.2",
     "type-coverage": "^2.24.1",
     "typescript": "~5.1.3",
