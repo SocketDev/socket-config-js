@@ -3,6 +3,7 @@
 const path = require('node:path')
 
 const chai = require('chai')
+const { expect } = chai
 const { default: chaiAsPromised } = require('chai-as-promised')
 
 const {
@@ -10,11 +11,12 @@ const {
 } = require('../index.js')
 
 chai.use(chaiAsPromised)
-chai.should()
 
 describe('readSocketConfig()', () => {
   it('should read and parse socket.yml', async () => {
-    await readSocketConfig(path.resolve(__dirname, 'sample.yml')).should.eventually.become({
+    await expect(
+      readSocketConfig(path.resolve(__dirname, 'sample.yml'))
+    ).to.eventually.deep.equal({
       githubApp: {
         enabled: true,
         projectReportsEnabled: true,
@@ -32,12 +34,14 @@ describe('readSocketConfig()', () => {
   })
 
   it('should fail silently when file not found', async () => {
-    await readSocketConfig(path.resolve(__dirname, 'non-existing.yml'))
-      .should.eventually.become(undefined)
+    await expect(
+      readSocketConfig(path.resolve(__dirname, 'non-existing.yml'))
+    ).to.eventually.equal(undefined)
   })
 
   it('should throw error when given a non-file', async () => {
-    await readSocketConfig(__dirname)
-      .should.be.rejectedWith(/Error when reading socket\.yml config file/)
+    await expect(
+      readSocketConfig(__dirname)
+    ).to.be.rejectedWith(/Error when reading socket\.yml config file/)
   })
 })

@@ -1,5 +1,6 @@
 {
-  "extends": "@tsconfig/node14/tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@tsconfig/node22/tsconfig.json",
   "files": [
     "index.js"
   ],
