@@ -10,6 +10,7 @@ on:
 env:
   node_version: "lts/*"
   FORCE_COLOR: 1
+  HUSKY: 0
 
 concurrency: # prevent concurrent releases
   group: npm-bump
